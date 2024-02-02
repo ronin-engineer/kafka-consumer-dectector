@@ -2,19 +2,21 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
     security:
-      protocol: plaintext
+      protocol: PLAINTEXT
     consumer:
       group-id: ronin-detector
-#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-#      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-#      auto-offset-reset: latest
-#      enable-auto-commit: true
-#      properties:
-#        spring.json.trusted.packages: '*'
-#        spring.json.type.mapping: "dev.ronin_engineer.kafka.consumer.detector.domain.dto.TransactionEvent:dev.ronin_engineer.kafka.producer.wallet.domain.dto.TransactionEvent"
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: latest
+      enable-auto-commit: true
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.json.use.type.headers: false
 
 
 kafka:
   transaction:
     topic: ronin-transactions
     concurrency: 3
+  test:
+    topic: ronin-test

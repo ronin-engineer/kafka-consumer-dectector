@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.annotation.RetryableTopic;
-import org.springframework.kafka.retrytopic.DltStrategy;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -24,9 +21,12 @@ public class KafkaConsumer {
 //            dltStrategy = DltStrategy.NO_DLT,
 //            autoCreateTopics = "false"
 //    )
-    @KafkaListener(topics = "${kafka.transaction.topic}")
+    @KafkaListener(
+            topics = "${kafka.transaction.topic}",
+            properties = {"spring.json.value.default.type=dev.ronin_engineer.kafka.consumer.detector.domain.dto.TransactionEvent"}
+    )
     @SneakyThrows
-    public void listenTransactions(TransactionEvent transaction) {
+    public void listenTransactions(@Payload TransactionEvent transaction) {
         log.info("Received message: " + transaction);
 //        throw new Exception("Failed to process transaction");
     }
