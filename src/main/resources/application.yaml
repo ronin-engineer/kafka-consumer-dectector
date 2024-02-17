@@ -12,7 +12,16 @@ spring:
       properties:
         spring.json.trusted.packages: '*'
         spring.json.use.type.headers: false
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 30
 
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 kafka:
   transaction:
