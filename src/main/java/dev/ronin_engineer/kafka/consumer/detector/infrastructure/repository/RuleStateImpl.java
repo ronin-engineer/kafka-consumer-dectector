@@ -22,16 +22,22 @@ public class RuleStateImpl implements RuleState {
     @SneakyThrows
     @Override
     public void addTransaction(String accountNumber, String transactionId, Long timestamp) {
-        RScoredSortedSet<String> transactionSet = redisClient.getScoredSortedSet(accountNumber);
-        if(!transactionSet.add(timestamp, transactionId)) {
+        var transactionSet = redisClient.getScoredSortedSet(accountNumber);
+        if (!transactionSet.add(timestamp, transactionId)) {
             throw new Exception("Failed to add transaction");
         }
     }
 
     @Override
     public Integer countTransactionsInRange(String accountNumber, Long from, Long to) {
-        RScoredSortedSet<String> transactionSet = redisClient.getScoredSortedSet(accountNumber);
+        var transactionSet = redisClient.getScoredSortedSet(accountNumber);
         return transactionSet.count(from, true, to, true);
+    }
+
+    @Override
+    public void removeTransactionsBefore(String accountNumber, Long timestamp) {
+        var transactionSet = redisClient.getScoredSortedSet(accountNumber);
+        transactionSet.removeRangeByScoreAsync(0L, true, timestamp, true);
     }
 
 //    @PostConstruct

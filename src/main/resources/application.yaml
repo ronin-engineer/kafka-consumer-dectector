@@ -1,3 +1,5 @@
+application-name: ronin-fraud-detector
+
 spring:
   kafka:
     bootstrap-servers: localhost:9092
@@ -12,6 +14,7 @@ spring:
       properties:
         spring.json.trusted.packages: '*'
         spring.json.use.type.headers: false
+        partition.assignment.strategy: org.apache.kafka.clients.consumer.CooperativeStickyAssignor
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -25,7 +28,19 @@ spring:
 
 kafka:
   transaction:
-    topic: ronin-transactions
+    topic: ronin-wallet-transactions-dev
     concurrency: 3
-  test:
-    topic: ronin-test
+
+  rule-hit:
+    topic: ronin-safety-rule-hits-dev
+
+rules:
+  max-transactions-last-minutes:
+    id: MAX_TRANSACTIONS_LAST_MINUTES
+    minutes: 1
+    max-transactions: 2
+
+  max-amount-last-minutes: # TODO
+    id: MAX_TRANSACTIONS_LAST_MINUTES
+    minutes: 5
+    max-amount: 1000000000

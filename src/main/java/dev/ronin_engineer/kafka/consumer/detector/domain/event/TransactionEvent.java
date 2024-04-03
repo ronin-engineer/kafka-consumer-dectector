@@ -1,4 +1,4 @@
-package dev.ronin_engineer.kafka.consumer.detector.domain.dto;
+package dev.ronin_engineer.kafka.consumer.detector.domain.event;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
